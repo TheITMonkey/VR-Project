@@ -1,0 +1,19 @@
+FROM archlinux/base
+
+RUN pacman -Syu --noconfirm python3
+
+RUN python3 --version
+
+RUN pacman -Syu --noconfirm python-pip
+
+RUN pip3 install flask
+
+RUN pip3 install request
+
+WORKDIR /usr/local/bin
+
+COPY src .
+RUN chmod +x mail_app.py
+RUN ls -la && pwd
+CMD [ "mail_app.py" ]
+#RUN python3 mail_app.py

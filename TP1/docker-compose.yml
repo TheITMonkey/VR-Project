@@ -1,0 +1,57 @@
+version: '2'
+services:
+    dbPost:
+        image: postgres:8.4
+        restart: always
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: mailSender  
+          POSTGRES_PASSWORD: 12345
+        volumes:
+          - data-postgres:/var/lib/postgresql/data
+        networks:
+            - db-tier            
+    auth:
+         image: brunof17/authredes:latest
+         restart: always
+         volumes:
+             - data-authRedes:/var/lib/authRedes/data
+         ports:
+             - '5000:5000'
+         networks:
+             - db-tier
+             - auth-tier
+    mailService:
+         image: brunof17/mailservice:latest
+         restart: always
+         volumes:
+             - data-mailService:/var/lib/mailservice/data
+         ports:
+             - '5001:5001'
+         networks:
+             - auth-tier
+             - email-tier
+    mailServer:
+        image: namshi/smtp:latest
+        restart: always
+        volumes:
+            - data-mailServer:/var/lib/mailserver/data
+        networks:
+            - email-tier
+networks:
+    db-tier:
+        driver: bridge
+    auth-tier:
+        driver: bridge
+    email-tier:
+        driver: bridge
+
+volumes:
+    data-postgres:
+        driver: local
+    data-authRedes:
+        driver: local
+    data-mailService:
+        driver: local
+    data-mailServer:
+        driver: local

@@ -1,0 +1,17 @@
+FROM python:latest
+
+RUN pip3 install flask
+
+RUN pip3 install requests
+
+WORKDIR /home/mail_app
+
+COPY src/smtpEmail.py src/mail_app.py /home/mail_app/
+COPY src/templates/* /home/mail_app/templates/
+RUN ls -la && pwd
+RUN ls -ls templates
+
+EXPOSE 5001/tcp
+
+CMD [ "python3","mail_app.py" ]
+#RUN python3 mail_app.py

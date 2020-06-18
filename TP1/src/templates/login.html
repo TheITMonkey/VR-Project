@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h2> Login  </h2>
+{% if error %}
+    <p class=error><strong>Error:</strong> {{error}}
+{% endif %}
+<div> 
+    <form method="POST">
+        <label> Nickname </label>
+        <input  type="text" name="nickname" required/> <br> 
+        <label> Password </label>
+        <input type="password" name="password" required/> <br>
+        <input type="submit" value="Login"> <br>
+    </form>
+</div>
+{% endblock %}
